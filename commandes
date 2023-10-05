@@ -1,0 +1,3 @@
+flex lexicale.l
+bison -d syntaxique.y --report=states,itemsets --debug
+gcc syntaxique.tab.c lex.yy.c RS.c TS.c Quad.c CodeMachine.c -o prog

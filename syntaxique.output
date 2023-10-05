@@ -1,0 +1,3170 @@
+Grammar
+
+    0 $accept: S $end
+
+    1 S: IDF '{' VAR '{' declaration '}' CODE '{' instruction '}' '}'
+
+    2 declaration: INTEGERdecPartie1 declaration
+    3            | INTEGER IDF '[' ENTIER ']' ';' declaration
+    4            | FLOATdecPartie1 declaration
+    5            | FLOAT IDF '[' ENTIER ']' ';' declaration
+    6            | STRusePartie2 declaration
+    7            | CONST IDF AFF ENTIER ';' declaration
+    8            | CONST IDF AFF ENTIER_SGN ';' declaration
+    9            | CONST IDF AFF REEL ';' declaration
+   10            | CONST IDF AFF REEL_SGN ';' declaration
+   11            | STRdec ';' declaration
+   12            | %empty
+
+   13 INTEGERdecPartie1: INTEGER listIDF
+
+   14 FLOATdecPartie1: FLOAT listIDF
+
+   15 STRusePartie2: STRuse listIDF
+
+   16 STRdec: STRUCT '{' CHAMPS '}' IDF
+
+   17 CHAMPS: CHAMP ';' CHAMPS
+   18       | %empty
+
+   19 listIDF: IDF ';'
+   20        | IDF ',' listIDF
+
+   21 CHAMP: INTEGER IDF
+   22      | FLOAT IDF
+
+   23 STRuse: STRUCT IDF
+
+   24 NUMBER: ENTIER
+   25       | REEL
+   26       | ENTIER_SGN
+   27       | REEL_SGN
+
+   28 instruction: INSTaff ';' instruction
+   29            | INSTaff2 ';' instruction
+   30            | INSTaff3 ';' instruction
+   31            | INSTaff4 ';' instruction
+   32            | IFpartie3 '}' instruction
+   33            | FORpartie4 '}' instruction
+   34            | WHILEpartie2 '}' instruction
+   35            | %empty
+
+   36 INSTaff: IDF AFF exp
+
+   37 INSTaff2: IDF '.' IDF AFF exp
+
+   38 INSTaff3: IDF '[' ENTIER ']' AFF exp
+
+   39 INSTaff4: IDF '[' IDF ']' AFF exp
+
+   40 IFpartie3: IFpartie2 '}' ELSE '{' instruction
+
+   41 IFpartie2: IFpartie1 ')' '{' instruction
+
+   42 IFpartie1: IF '(' condition
+
+   43 FORpartie4: FORpartie3 ')' '{' instruction
+
+   44 FORpartie3: FORpartie2 ':' ENTIER ':' condition
+
+   45 FORpartie2: FORpartie1 ':' ENTIER
+
+   46 FORpartie1: FOR '(' IDF
+
+   47 WHILEpartie2: WHILEpartie1 ')' '{' instruction
+
+   48 WHILEpartie1: WHILE '(' condition
+
+   49 condition: condition OR condition
+   50          | condition AND condition
+   51          | NOT '(' condition ')'
+   52          | exp G exp
+   53          | exp GE exp
+   54          | exp L exp
+   55          | exp LE exp
+   56          | exp E exp
+   57          | exp NE exp
+   58          | NUMBER
+
+   59 exp: exp SUB term
+   60    | exp ADD term
+   61    | term
+
+   62 term: term MUL factor
+   63     | term DIV factor
+   64     | factor
+
+   65 factor: IDF
+   66       | IDF '[' ENTIER ']'
+   67       | IDF '[' IDF ']'
+   68       | IDF '.' IDF
+   69       | NUMBER
+   70       | '(' exp ')'
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    '(' (40) 42 46 48 51 70
+    ')' (41) 41 43 47 51 70
+    ',' (44) 20
+    '.' (46) 37 68
+    ':' (58) 44 45
+    ';' (59) 3 5 7 8 9 10 11 17 19 28 29 30 31
+    '[' (91) 3 5 38 39 66 67
+    ']' (93) 3 5 38 39 66 67
+    '{' (123) 1 16 40 41 43 47
+    '}' (125) 1 16 32 33 34 40
+    error (256)
+    VAR <nom> (258) 1
+    CODE <nom> (259) 1
+    INTEGER <nom> (260) 3 13 21
+    FLOAT <nom> (261) 5 14 22
+    STRUCT <nom> (262) 16 23
+    IF <nom> (263) 42
+    CONST <nom> (264) 7 8 9 10
+    ELSE <nom> (265) 40
+    FOR <nom> (266) 46
+    WHILE <nom> (267) 48
+    IDF <nom> (268) 1 3 5 7 8 9 10 16 19 20 21 22 23 36 37 38 39 46 65 66 67 68
+    REEL <nom> (269) 9 25
+    ENTIER <nom> (270) 3 5 7 24 38 44 45 66
+    REEL_SGN <nom> (271) 10 27
+    ENTIER_SGN <nom> (272) 8 26
+    AFF (273) 7 8 9 10 36 37 38 39
+    ADD (274) 60
+    SUB (275) 59
+    MUL (276) 62
+    DIV (277) 63
+    OR (278) 49
+    AND (279) 50
+    NOT (280) 51
+    G (281) 52
+    GE (282) 53
+    L (283) 54
+    LE (284) 55
+    E (285) 56
+    NE (286) 57
+
+
+Nonterminals, with rules where they appear
+
+    $accept (42)
+        on left: 0
+    S (43)
+        on left: 1
+        on right: 0
+    declaration (44)
+        on left: 2 3 4 5 6 7 8 9 10 11 12
+        on right: 1 2 3 4 5 6 7 8 9 10 11
+    INTEGERdecPartie1 (45)
+        on left: 13
+        on right: 2
+    FLOATdecPartie1 (46)
+        on left: 14
+        on right: 4
+    STRusePartie2 (47)
+        on left: 15
+        on right: 6
+    STRdec (48)
+        on left: 16
+        on right: 11
+    CHAMPS (49)
+        on left: 17 18
+        on right: 16 17
+    listIDF <DECT> (50)
+        on left: 19 20
+        on right: 13 14 15 20
+    CHAMP (51)
+        on left: 21 22
+        on right: 17
+    STRuse <structure> (52)
+        on left: 23
+        on right: 15
+    NUMBER <NT> (53)
+        on left: 24 25 26 27
+        on right: 58 69
+    instruction <NT> (54)
+        on left: 28 29 30 31 32 33 34 35
+        on right: 1 28 29 30 31 32 33 34 40 41 43 47
+    INSTaff (55)
+        on left: 36
+        on right: 28
+    INSTaff2 (56)
+        on left: 37
+        on right: 29
+    INSTaff3 (57)
+        on left: 38
+        on right: 30
+    INSTaff4 (58)
+        on left: 39
+        on right: 31
+    IFpartie3 <Cond> (59)
+        on left: 40
+        on right: 32
+    IFpartie2 <Cond> (60)
+        on left: 41
+        on right: 40
+    IFpartie1 <Cond> (61)
+        on left: 42
+        on right: 41
+    FORpartie4 <boucle> (62)
+        on left: 43
+        on right: 33
+    FORpartie3 <boucle> (63)
+        on left: 44
+        on right: 43
+    FORpartie2 <boucle> (64)
+        on left: 45
+        on right: 44
+    FORpartie1 <boucle> (65)
+        on left: 46
+        on right: 45
+    WHILEpartie2 <boucle> (66)
+        on left: 47
+        on right: 34
+    WHILEpartie1 <boucle> (67)
+        on left: 48
+        on right: 47
+    condition <NT> (68)
+        on left: 49 50 51 52 53 54 55 56 57 58
+        on right: 42 44 48 49 50 51
+    exp <NT> (69)
+        on left: 59 60 61
+        on right: 36 37 38 39 52 53 54 55 56 57 59 60 70
+    term <NT> (70)
+        on left: 62 63 64
+        on right: 59 60 61 62 63
+    factor <NT> (71)
+        on left: 65 66 67 68 69 70
+        on right: 62 63 64
+
+
+State 0
+
+    0 $accept: . S $end
+    1 S: . IDF '{' VAR '{' declaration '}' CODE '{' instruction '}' '}'
+
+    IDF  shift, and go to state 1
+
+    S  go to state 2
+
+
+State 1
+
+    1 S: IDF . '{' VAR '{' declaration '}' CODE '{' instruction '}' '}'
+
+    '{'  shift, and go to state 3
+
+
+State 2
+
+    0 $accept: S . $end
+
+    $end  shift, and go to state 4
+
+
+State 3
+
+    1 S: IDF '{' . VAR '{' declaration '}' CODE '{' instruction '}' '}'
+
+    VAR  shift, and go to state 5
+
+
+State 4
+
+    0 $accept: S $end .
+
+    $default  accept
+
+
+State 5
+
+    1 S: IDF '{' VAR . '{' declaration '}' CODE '{' instruction '}' '}'
+
+    '{'  shift, and go to state 6
+
+
+State 6
+
+    1 S: IDF '{' VAR '{' . declaration '}' CODE '{' instruction '}' '}'
+    2 declaration: . INTEGERdecPartie1 declaration
+    3            | . INTEGER IDF '[' ENTIER ']' ';' declaration
+    4            | . FLOATdecPartie1 declaration
+    5            | . FLOAT IDF '[' ENTIER ']' ';' declaration
+    6            | . STRusePartie2 declaration
+    7            | . CONST IDF AFF ENTIER ';' declaration
+    8            | . CONST IDF AFF ENTIER_SGN ';' declaration
+    9            | . CONST IDF AFF REEL ';' declaration
+   10            | . CONST IDF AFF REEL_SGN ';' declaration
+   11            | . STRdec ';' declaration
+   12            | . %empty
+   13 INTEGERdecPartie1: . INTEGER listIDF
+   14 FLOATdecPartie1: . FLOAT listIDF
+   15 STRusePartie2: . STRuse listIDF
+   16 STRdec: . STRUCT '{' CHAMPS '}' IDF
+   23 STRuse: . STRUCT IDF
+
+    INTEGER  shift, and go to state 7
+    FLOAT    shift, and go to state 8
+    STRUCT   shift, and go to state 9
+    CONST    shift, and go to state 10
+
+    $default  reduce using rule 12 (declaration)
+
+    declaration        go to state 11
+    INTEGERdecPartie1  go to state 12
+    FLOATdecPartie1    go to state 13
+    STRusePartie2      go to state 14
+    STRdec             go to state 15
+    STRuse             go to state 16
+
+
+State 7
+
+    3 declaration: INTEGER . IDF '[' ENTIER ']' ';' declaration
+   13 INTEGERdecPartie1: INTEGER . listIDF
+   19 listIDF: . IDF ';'
+   20        | . IDF ',' listIDF
+
+    IDF  shift, and go to state 17
+
+    listIDF  go to state 18
+
+
+State 8
+
+    5 declaration: FLOAT . IDF '[' ENTIER ']' ';' declaration
+   14 FLOATdecPartie1: FLOAT . listIDF
+   19 listIDF: . IDF ';'
+   20        | . IDF ',' listIDF
+
+    IDF  shift, and go to state 19
+
+    listIDF  go to state 20
+
+
+State 9
+
+   16 STRdec: STRUCT . '{' CHAMPS '}' IDF
+   23 STRuse: STRUCT . IDF
+
+    IDF  shift, and go to state 21
+    '{'  shift, and go to state 22
+
+
+State 10
+
+    7 declaration: CONST . IDF AFF ENTIER ';' declaration
+    8            | CONST . IDF AFF ENTIER_SGN ';' declaration
+    9            | CONST . IDF AFF REEL ';' declaration
+   10            | CONST . IDF AFF REEL_SGN ';' declaration
+
+    IDF  shift, and go to state 23
+
+
+State 11
+
+    1 S: IDF '{' VAR '{' declaration . '}' CODE '{' instruction '}' '}'
+
+    '}'  shift, and go to state 24
+
+
+State 12
+
+    2 declaration: . INTEGERdecPartie1 declaration
+    2            | INTEGERdecPartie1 . declaration
+    3            | . INTEGER IDF '[' ENTIER ']' ';' declaration
+    4            | . FLOATdecPartie1 declaration
+    5            | . FLOAT IDF '[' ENTIER ']' ';' declaration
+    6            | . STRusePartie2 declaration
+    7            | . CONST IDF AFF ENTIER ';' declaration
+    8            | . CONST IDF AFF ENTIER_SGN ';' declaration
+    9            | . CONST IDF AFF REEL ';' declaration
+   10            | . CONST IDF AFF REEL_SGN ';' declaration
+   11            | . STRdec ';' declaration
+   12            | . %empty
+   13 INTEGERdecPartie1: . INTEGER listIDF
+   14 FLOATdecPartie1: . FLOAT listIDF
+   15 STRusePartie2: . STRuse listIDF
+   16 STRdec: . STRUCT '{' CHAMPS '}' IDF
+   23 STRuse: . STRUCT IDF
+
+    INTEGER  shift, and go to state 7
+    FLOAT    shift, and go to state 8
+    STRUCT   shift, and go to state 9
+    CONST    shift, and go to state 10
+
+    $default  reduce using rule 12 (declaration)
+
+    declaration        go to state 25
+    INTEGERdecPartie1  go to state 12
+    FLOATdecPartie1    go to state 13
+    STRusePartie2      go to state 14
+    STRdec             go to state 15
+    STRuse             go to state 16
+
+
+State 13
+
+    2 declaration: . INTEGERdecPartie1 declaration
+    3            | . INTEGER IDF '[' ENTIER ']' ';' declaration
+    4            | . FLOATdecPartie1 declaration
+    4            | FLOATdecPartie1 . declaration
+    5            | . FLOAT IDF '[' ENTIER ']' ';' declaration
+    6            | . STRusePartie2 declaration
+    7            | . CONST IDF AFF ENTIER ';' declaration
+    8            | . CONST IDF AFF ENTIER_SGN ';' declaration
+    9            | . CONST IDF AFF REEL ';' declaration
+   10            | . CONST IDF AFF REEL_SGN ';' declaration
+   11            | . STRdec ';' declaration
+   12            | . %empty
+   13 INTEGERdecPartie1: . INTEGER listIDF
+   14 FLOATdecPartie1: . FLOAT listIDF
+   15 STRusePartie2: . STRuse listIDF
+   16 STRdec: . STRUCT '{' CHAMPS '}' IDF
+   23 STRuse: . STRUCT IDF
+
+    INTEGER  shift, and go to state 7
+    FLOAT    shift, and go to state 8
+    STRUCT   shift, and go to state 9
+    CONST    shift, and go to state 10
+
+    $default  reduce using rule 12 (declaration)
+
+    declaration        go to state 26
+    INTEGERdecPartie1  go to state 12
+    FLOATdecPartie1    go to state 13
+    STRusePartie2      go to state 14
+    STRdec             go to state 15
+    STRuse             go to state 16
+
+
+State 14
+
+    2 declaration: . INTEGERdecPartie1 declaration
+    3            | . INTEGER IDF '[' ENTIER ']' ';' declaration
+    4            | . FLOATdecPartie1 declaration
+    5            | . FLOAT IDF '[' ENTIER ']' ';' declaration
+    6            | . STRusePartie2 declaration
+    6            | STRusePartie2 . declaration
+    7            | . CONST IDF AFF ENTIER ';' declaration
+    8            | . CONST IDF AFF ENTIER_SGN ';' declaration
+    9            | . CONST IDF AFF REEL ';' declaration
+   10            | . CONST IDF AFF REEL_SGN ';' declaration
+   11            | . STRdec ';' declaration
+   12            | . %empty
+   13 INTEGERdecPartie1: . INTEGER listIDF
+   14 FLOATdecPartie1: . FLOAT listIDF
+   15 STRusePartie2: . STRuse listIDF
+   16 STRdec: . STRUCT '{' CHAMPS '}' IDF
+   23 STRuse: . STRUCT IDF
+
+    INTEGER  shift, and go to state 7
+    FLOAT    shift, and go to state 8
+    STRUCT   shift, and go to state 9
+    CONST    shift, and go to state 10
+
+    $default  reduce using rule 12 (declaration)
+
+    declaration        go to state 27
+    INTEGERdecPartie1  go to state 12
+    FLOATdecPartie1    go to state 13
+    STRusePartie2      go to state 14
+    STRdec             go to state 15
+    STRuse             go to state 16
+
+
+State 15
+
+   11 declaration: STRdec . ';' declaration
+
+    ';'  shift, and go to state 28
+
+
+State 16
+
+   15 STRusePartie2: STRuse . listIDF
+   19 listIDF: . IDF ';'
+   20        | . IDF ',' listIDF
+
+    IDF  shift, and go to state 29
+
+    listIDF  go to state 30
+
+
+State 17
+
+    3 declaration: INTEGER IDF . '[' ENTIER ']' ';' declaration
+   19 listIDF: IDF . ';'
+   20        | IDF . ',' listIDF
+
+    ';'  shift, and go to state 31
+    '['  shift, and go to state 32
+    ','  shift, and go to state 33
+
+
+State 18
+
+   13 INTEGERdecPartie1: INTEGER listIDF .
+
+    $default  reduce using rule 13 (INTEGERdecPartie1)
+
+
+State 19
+
+    5 declaration: FLOAT IDF . '[' ENTIER ']' ';' declaration
+   19 listIDF: IDF . ';'
+   20        | IDF . ',' listIDF
+
+    ';'  shift, and go to state 31
+    '['  shift, and go to state 34
+    ','  shift, and go to state 33
+
+
+State 20
+
+   14 FLOATdecPartie1: FLOAT listIDF .
+
+    $default  reduce using rule 14 (FLOATdecPartie1)
+
+
+State 21
+
+   23 STRuse: STRUCT IDF .
+
+    $default  reduce using rule 23 (STRuse)
+
+
+State 22
+
+   16 STRdec: STRUCT '{' . CHAMPS '}' IDF
+   17 CHAMPS: . CHAMP ';' CHAMPS
+   18       | . %empty
+   21 CHAMP: . INTEGER IDF
+   22      | . FLOAT IDF
+
+    INTEGER  shift, and go to state 35
+    FLOAT    shift, and go to state 36
+
+    $default  reduce using rule 18 (CHAMPS)
+
+    CHAMPS  go to state 37
+    CHAMP   go to state 38
+
+
+State 23
+
+    7 declaration: CONST IDF . AFF ENTIER ';' declaration
+    8            | CONST IDF . AFF ENTIER_SGN ';' declaration
+    9            | CONST IDF . AFF REEL ';' declaration
+   10            | CONST IDF . AFF REEL_SGN ';' declaration
+
+    AFF  shift, and go to state 39
+
+
+State 24
+
+    1 S: IDF '{' VAR '{' declaration '}' . CODE '{' instruction '}' '}'
+
+    CODE  shift, and go to state 40
+
+
+State 25
+
+    2 declaration: INTEGERdecPartie1 declaration .
+
+    $default  reduce using rule 2 (declaration)
+
+
+State 26
+
+    4 declaration: FLOATdecPartie1 declaration .
+
+    $default  reduce using rule 4 (declaration)
+
+
+State 27
+
+    6 declaration: STRusePartie2 declaration .
+
+    $default  reduce using rule 6 (declaration)
+
+
+State 28
+
+    2 declaration: . INTEGERdecPartie1 declaration
+    3            | . INTEGER IDF '[' ENTIER ']' ';' declaration
+    4            | . FLOATdecPartie1 declaration
+    5            | . FLOAT IDF '[' ENTIER ']' ';' declaration
+    6            | . STRusePartie2 declaration
+    7            | . CONST IDF AFF ENTIER ';' declaration
+    8            | . CONST IDF AFF ENTIER_SGN ';' declaration
+    9            | . CONST IDF AFF REEL ';' declaration
+   10            | . CONST IDF AFF REEL_SGN ';' declaration
+   11            | . STRdec ';' declaration
+   11            | STRdec ';' . declaration
+   12            | . %empty
+   13 INTEGERdecPartie1: . INTEGER listIDF
+   14 FLOATdecPartie1: . FLOAT listIDF
+   15 STRusePartie2: . STRuse listIDF
+   16 STRdec: . STRUCT '{' CHAMPS '}' IDF
+   23 STRuse: . STRUCT IDF
+
+    INTEGER  shift, and go to state 7
+    FLOAT    shift, and go to state 8
+    STRUCT   shift, and go to state 9
+    CONST    shift, and go to state 10
+
+    $default  reduce using rule 12 (declaration)
+
+    declaration        go to state 41
+    INTEGERdecPartie1  go to state 12
+    FLOATdecPartie1    go to state 13
+    STRusePartie2      go to state 14
+    STRdec             go to state 15
+    STRuse             go to state 16
+
+
+State 29
+
+   19 listIDF: IDF . ';'
+   20        | IDF . ',' listIDF
+
+    ';'  shift, and go to state 31
+    ','  shift, and go to state 33
+
+
+State 30
+
+   15 STRusePartie2: STRuse listIDF .
+
+    $default  reduce using rule 15 (STRusePartie2)
+
+
+State 31
+
+   19 listIDF: IDF ';' .
+
+    $default  reduce using rule 19 (listIDF)
+
+
+State 32
+
+    3 declaration: INTEGER IDF '[' . ENTIER ']' ';' declaration
+
+    ENTIER  shift, and go to state 42
+
+
+State 33
+
+   19 listIDF: . IDF ';'
+   20        | . IDF ',' listIDF
+   20        | IDF ',' . listIDF
+
+    IDF  shift, and go to state 29
+
+    listIDF  go to state 43
+
+
+State 34
+
+    5 declaration: FLOAT IDF '[' . ENTIER ']' ';' declaration
+
+    ENTIER  shift, and go to state 44
+
+
+State 35
+
+   21 CHAMP: INTEGER . IDF
+
+    IDF  shift, and go to state 45
+
+
+State 36
+
+   22 CHAMP: FLOAT . IDF
+
+    IDF  shift, and go to state 46
+
+
+State 37
+
+   16 STRdec: STRUCT '{' CHAMPS . '}' IDF
+
+    '}'  shift, and go to state 47
+
+
+State 38
+
+   17 CHAMPS: CHAMP . ';' CHAMPS
+
+    ';'  shift, and go to state 48
+
+
+State 39
+
+    7 declaration: CONST IDF AFF . ENTIER ';' declaration
+    8            | CONST IDF AFF . ENTIER_SGN ';' declaration
+    9            | CONST IDF AFF . REEL ';' declaration
+   10            | CONST IDF AFF . REEL_SGN ';' declaration
+
+    REEL        shift, and go to state 49
+    ENTIER      shift, and go to state 50
+    REEL_SGN    shift, and go to state 51
+    ENTIER_SGN  shift, and go to state 52
+
+
+State 40
+
+    1 S: IDF '{' VAR '{' declaration '}' CODE . '{' instruction '}' '}'
+
+    '{'  shift, and go to state 53
+
+
+State 41
+
+   11 declaration: STRdec ';' declaration .
+
+    $default  reduce using rule 11 (declaration)
+
+
+State 42
+
+    3 declaration: INTEGER IDF '[' ENTIER . ']' ';' declaration
+
+    ']'  shift, and go to state 54
+
+
+State 43
+
+   20 listIDF: IDF ',' listIDF .
+
+    $default  reduce using rule 20 (listIDF)
+
+
+State 44
+
+    5 declaration: FLOAT IDF '[' ENTIER . ']' ';' declaration
+
+    ']'  shift, and go to state 55
+
+
+State 45
+
+   21 CHAMP: INTEGER IDF .
+
+    $default  reduce using rule 21 (CHAMP)
+
+
+State 46
+
+   22 CHAMP: FLOAT IDF .
+
+    $default  reduce using rule 22 (CHAMP)
+
+
+State 47
+
+   16 STRdec: STRUCT '{' CHAMPS '}' . IDF
+
+    IDF  shift, and go to state 56
+
+
+State 48
+
+   17 CHAMPS: . CHAMP ';' CHAMPS
+   17       | CHAMP ';' . CHAMPS
+   18       | . %empty
+   21 CHAMP: . INTEGER IDF
+   22      | . FLOAT IDF
+
+    INTEGER  shift, and go to state 35
+    FLOAT    shift, and go to state 36
+
+    $default  reduce using rule 18 (CHAMPS)
+
+    CHAMPS  go to state 57
+    CHAMP   go to state 38
+
+
+State 49
+
+    9 declaration: CONST IDF AFF REEL . ';' declaration
+
+    ';'  shift, and go to state 58
+
+
+State 50
+
+    7 declaration: CONST IDF AFF ENTIER . ';' declaration
+
+    ';'  shift, and go to state 59
+
+
+State 51
+
+   10 declaration: CONST IDF AFF REEL_SGN . ';' declaration
+
+    ';'  shift, and go to state 60
+
+
+State 52
+
+    8 declaration: CONST IDF AFF ENTIER_SGN . ';' declaration
+
+    ';'  shift, and go to state 61
+
+
+State 53
+
+    1 S: IDF '{' VAR '{' declaration '}' CODE '{' . instruction '}' '}'
+   28 instruction: . INSTaff ';' instruction
+   29            | . INSTaff2 ';' instruction
+   30            | . INSTaff3 ';' instruction
+   31            | . INSTaff4 ';' instruction
+   32            | . IFpartie3 '}' instruction
+   33            | . FORpartie4 '}' instruction
+   34            | . WHILEpartie2 '}' instruction
+   35            | . %empty
+   36 INSTaff: . IDF AFF exp
+   37 INSTaff2: . IDF '.' IDF AFF exp
+   38 INSTaff3: . IDF '[' ENTIER ']' AFF exp
+   39 INSTaff4: . IDF '[' IDF ']' AFF exp
+   40 IFpartie3: . IFpartie2 '}' ELSE '{' instruction
+   41 IFpartie2: . IFpartie1 ')' '{' instruction
+   42 IFpartie1: . IF '(' condition
+   43 FORpartie4: . FORpartie3 ')' '{' instruction
+   44 FORpartie3: . FORpartie2 ':' ENTIER ':' condition
+   45 FORpartie2: . FORpartie1 ':' ENTIER
+   46 FORpartie1: . FOR '(' IDF
+   47 WHILEpartie2: . WHILEpartie1 ')' '{' instruction
+   48 WHILEpartie1: . WHILE '(' condition
+
+    IF     shift, and go to state 62
+    FOR    shift, and go to state 63
+    WHILE  shift, and go to state 64
+    IDF    shift, and go to state 65
+
+    $default  reduce using rule 35 (instruction)
+
+    instruction   go to state 66
+    INSTaff       go to state 67
+    INSTaff2      go to state 68
+    INSTaff3      go to state 69
+    INSTaff4      go to state 70
+    IFpartie3     go to state 71
+    IFpartie2     go to state 72
+    IFpartie1     go to state 73
+    FORpartie4    go to state 74
+    FORpartie3    go to state 75
+    FORpartie2    go to state 76
+    FORpartie1    go to state 77
+    WHILEpartie2  go to state 78
+    WHILEpartie1  go to state 79
+
+
+State 54
+
+    3 declaration: INTEGER IDF '[' ENTIER ']' . ';' declaration
+
+    ';'  shift, and go to state 80
+
+
+State 55
+
+    5 declaration: FLOAT IDF '[' ENTIER ']' . ';' declaration
+
+    ';'  shift, and go to state 81
+
+
+State 56
+
+   16 STRdec: STRUCT '{' CHAMPS '}' IDF .
+
+    $default  reduce using rule 16 (STRdec)
+
+
+State 57
+
+   17 CHAMPS: CHAMP ';' CHAMPS .
+
+    $default  reduce using rule 17 (CHAMPS)
+
+
+State 58
+
+    2 declaration: . INTEGERdecPartie1 declaration
+    3            | . INTEGER IDF '[' ENTIER ']' ';' declaration
+    4            | . FLOATdecPartie1 declaration
+    5            | . FLOAT IDF '[' ENTIER ']' ';' declaration
+    6            | . STRusePartie2 declaration
+    7            | . CONST IDF AFF ENTIER ';' declaration
+    8            | . CONST IDF AFF ENTIER_SGN ';' declaration
+    9            | . CONST IDF AFF REEL ';' declaration
+    9            | CONST IDF AFF REEL ';' . declaration
+   10            | . CONST IDF AFF REEL_SGN ';' declaration
+   11            | . STRdec ';' declaration
+   12            | . %empty
+   13 INTEGERdecPartie1: . INTEGER listIDF
+   14 FLOATdecPartie1: . FLOAT listIDF
+   15 STRusePartie2: . STRuse listIDF
+   16 STRdec: . STRUCT '{' CHAMPS '}' IDF
+   23 STRuse: . STRUCT IDF
+
+    INTEGER  shift, and go to state 7
+    FLOAT    shift, and go to state 8
+    STRUCT   shift, and go to state 9
+    CONST    shift, and go to state 10
+
+    $default  reduce using rule 12 (declaration)
+
+    declaration        go to state 82
+    INTEGERdecPartie1  go to state 12
+    FLOATdecPartie1    go to state 13
+    STRusePartie2      go to state 14
+    STRdec             go to state 15
+    STRuse             go to state 16
+
+
+State 59
+
+    2 declaration: . INTEGERdecPartie1 declaration
+    3            | . INTEGER IDF '[' ENTIER ']' ';' declaration
+    4            | . FLOATdecPartie1 declaration
+    5            | . FLOAT IDF '[' ENTIER ']' ';' declaration
+    6            | . STRusePartie2 declaration
+    7            | . CONST IDF AFF ENTIER ';' declaration
+    7            | CONST IDF AFF ENTIER ';' . declaration
+    8            | . CONST IDF AFF ENTIER_SGN ';' declaration
+    9            | . CONST IDF AFF REEL ';' declaration
+   10            | . CONST IDF AFF REEL_SGN ';' declaration
+   11            | . STRdec ';' declaration
+   12            | . %empty
+   13 INTEGERdecPartie1: . INTEGER listIDF
+   14 FLOATdecPartie1: . FLOAT listIDF
+   15 STRusePartie2: . STRuse listIDF
+   16 STRdec: . STRUCT '{' CHAMPS '}' IDF
+   23 STRuse: . STRUCT IDF
+
+    INTEGER  shift, and go to state 7
+    FLOAT    shift, and go to state 8
+    STRUCT   shift, and go to state 9
+    CONST    shift, and go to state 10
+
+    $default  reduce using rule 12 (declaration)
+
+    declaration        go to state 83
+    INTEGERdecPartie1  go to state 12
+    FLOATdecPartie1    go to state 13
+    STRusePartie2      go to state 14
+    STRdec             go to state 15
+    STRuse             go to state 16
+
+
+State 60
+
+    2 declaration: . INTEGERdecPartie1 declaration
+    3            | . INTEGER IDF '[' ENTIER ']' ';' declaration
+    4            | . FLOATdecPartie1 declaration
+    5            | . FLOAT IDF '[' ENTIER ']' ';' declaration
+    6            | . STRusePartie2 declaration
+    7            | . CONST IDF AFF ENTIER ';' declaration
+    8            | . CONST IDF AFF ENTIER_SGN ';' declaration
+    9            | . CONST IDF AFF REEL ';' declaration
+   10            | . CONST IDF AFF REEL_SGN ';' declaration
+   10            | CONST IDF AFF REEL_SGN ';' . declaration
+   11            | . STRdec ';' declaration
+   12            | . %empty
+   13 INTEGERdecPartie1: . INTEGER listIDF
+   14 FLOATdecPartie1: . FLOAT listIDF
+   15 STRusePartie2: . STRuse listIDF
+   16 STRdec: . STRUCT '{' CHAMPS '}' IDF
+   23 STRuse: . STRUCT IDF
+
+    INTEGER  shift, and go to state 7
+    FLOAT    shift, and go to state 8
+    STRUCT   shift, and go to state 9
+    CONST    shift, and go to state 10
+
+    $default  reduce using rule 12 (declaration)
+
+    declaration        go to state 84
+    INTEGERdecPartie1  go to state 12
+    FLOATdecPartie1    go to state 13
+    STRusePartie2      go to state 14
+    STRdec             go to state 15
+    STRuse             go to state 16
+
+
+State 61
+
+    2 declaration: . INTEGERdecPartie1 declaration
+    3            | . INTEGER IDF '[' ENTIER ']' ';' declaration
+    4            | . FLOATdecPartie1 declaration
+    5            | . FLOAT IDF '[' ENTIER ']' ';' declaration
+    6            | . STRusePartie2 declaration
+    7            | . CONST IDF AFF ENTIER ';' declaration
+    8            | . CONST IDF AFF ENTIER_SGN ';' declaration
+    8            | CONST IDF AFF ENTIER_SGN ';' . declaration
+    9            | . CONST IDF AFF REEL ';' declaration
+   10            | . CONST IDF AFF REEL_SGN ';' declaration
+   11            | . STRdec ';' declaration
+   12            | . %empty
+   13 INTEGERdecPartie1: . INTEGER listIDF
+   14 FLOATdecPartie1: . FLOAT listIDF
+   15 STRusePartie2: . STRuse listIDF
+   16 STRdec: . STRUCT '{' CHAMPS '}' IDF
+   23 STRuse: . STRUCT IDF
+
+    INTEGER  shift, and go to state 7
+    FLOAT    shift, and go to state 8
+    STRUCT   shift, and go to state 9
+    CONST    shift, and go to state 10
+
+    $default  reduce using rule 12 (declaration)
+
+    declaration        go to state 85
+    INTEGERdecPartie1  go to state 12
+    FLOATdecPartie1    go to state 13
+    STRusePartie2      go to state 14
+    STRdec             go to state 15
+    STRuse             go to state 16
+
+
+State 62
+
+   42 IFpartie1: IF . '(' condition
+
+    '('  shift, and go to state 86
+
+
+State 63
+
+   46 FORpartie1: FOR . '(' IDF
+
+    '('  shift, and go to state 87
+
+
+State 64
+
+   48 WHILEpartie1: WHILE . '(' condition
+
+    '('  shift, and go to state 88
+
+
+State 65
+
+   36 INSTaff: IDF . AFF exp
+   37 INSTaff2: IDF . '.' IDF AFF exp
+   38 INSTaff3: IDF . '[' ENTIER ']' AFF exp
+   39 INSTaff4: IDF . '[' IDF ']' AFF exp
+
+    AFF  shift, and go to state 89
+    '['  shift, and go to state 90
+    '.'  shift, and go to state 91
+
+
+State 66
+
+    1 S: IDF '{' VAR '{' declaration '}' CODE '{' instruction . '}' '}'
+
+    '}'  shift, and go to state 92
+
+
+State 67
+
+   28 instruction: INSTaff . ';' instruction
+
+    ';'  shift, and go to state 93
+
+
+State 68
+
+   29 instruction: INSTaff2 . ';' instruction
+
+    ';'  shift, and go to state 94
+
+
+State 69
+
+   30 instruction: INSTaff3 . ';' instruction
+
+    ';'  shift, and go to state 95
+
+
+State 70
+
+   31 instruction: INSTaff4 . ';' instruction
+
+    ';'  shift, and go to state 96
+
+
+State 71
+
+   32 instruction: IFpartie3 . '}' instruction
+
+    '}'  shift, and go to state 97
+
+
+State 72
+
+   40 IFpartie3: IFpartie2 . '}' ELSE '{' instruction
+
+    '}'  shift, and go to state 98
+
+
+State 73
+
+   41 IFpartie2: IFpartie1 . ')' '{' instruction
+
+    ')'  shift, and go to state 99
+
+
+State 74
+
+   33 instruction: FORpartie4 . '}' instruction
+
+    '}'  shift, and go to state 100
+
+
+State 75
+
+   43 FORpartie4: FORpartie3 . ')' '{' instruction
+
+    ')'  shift, and go to state 101
+
+
+State 76
+
+   44 FORpartie3: FORpartie2 . ':' ENTIER ':' condition
+
+    ':'  shift, and go to state 102
+
+
+State 77
+
+   45 FORpartie2: FORpartie1 . ':' ENTIER
+
+    ':'  shift, and go to state 103
+
+
+State 78
+
+   34 instruction: WHILEpartie2 . '}' instruction
+
+    '}'  shift, and go to state 104
+
+
+State 79
+
+   47 WHILEpartie2: WHILEpartie1 . ')' '{' instruction
+
+    ')'  shift, and go to state 105
+
+
+State 80
+
+    2 declaration: . INTEGERdecPartie1 declaration
+    3            | . INTEGER IDF '[' ENTIER ']' ';' declaration
+    3            | INTEGER IDF '[' ENTIER ']' ';' . declaration
+    4            | . FLOATdecPartie1 declaration
+    5            | . FLOAT IDF '[' ENTIER ']' ';' declaration
+    6            | . STRusePartie2 declaration
+    7            | . CONST IDF AFF ENTIER ';' declaration
+    8            | . CONST IDF AFF ENTIER_SGN ';' declaration
+    9            | . CONST IDF AFF REEL ';' declaration
+   10            | . CONST IDF AFF REEL_SGN ';' declaration
+   11            | . STRdec ';' declaration
+   12            | . %empty
+   13 INTEGERdecPartie1: . INTEGER listIDF
+   14 FLOATdecPartie1: . FLOAT listIDF
+   15 STRusePartie2: . STRuse listIDF
+   16 STRdec: . STRUCT '{' CHAMPS '}' IDF
+   23 STRuse: . STRUCT IDF
+
+    INTEGER  shift, and go to state 7
+    FLOAT    shift, and go to state 8
+    STRUCT   shift, and go to state 9
+    CONST    shift, and go to state 10
+
+    $default  reduce using rule 12 (declaration)
+
+    declaration        go to state 106
+    INTEGERdecPartie1  go to state 12
+    FLOATdecPartie1    go to state 13
+    STRusePartie2      go to state 14
+    STRdec             go to state 15
+    STRuse             go to state 16
+
+
+State 81
+
+    2 declaration: . INTEGERdecPartie1 declaration
+    3            | . INTEGER IDF '[' ENTIER ']' ';' declaration
+    4            | . FLOATdecPartie1 declaration
+    5            | . FLOAT IDF '[' ENTIER ']' ';' declaration
+    5            | FLOAT IDF '[' ENTIER ']' ';' . declaration
+    6            | . STRusePartie2 declaration
+    7            | . CONST IDF AFF ENTIER ';' declaration
+    8            | . CONST IDF AFF ENTIER_SGN ';' declaration
+    9            | . CONST IDF AFF REEL ';' declaration
+   10            | . CONST IDF AFF REEL_SGN ';' declaration
+   11            | . STRdec ';' declaration
+   12            | . %empty
+   13 INTEGERdecPartie1: . INTEGER listIDF
+   14 FLOATdecPartie1: . FLOAT listIDF
+   15 STRusePartie2: . STRuse listIDF
+   16 STRdec: . STRUCT '{' CHAMPS '}' IDF
+   23 STRuse: . STRUCT IDF
+
+    INTEGER  shift, and go to state 7
+    FLOAT    shift, and go to state 8
+    STRUCT   shift, and go to state 9
+    CONST    shift, and go to state 10
+
+    $default  reduce using rule 12 (declaration)
+
+    declaration        go to state 107
+    INTEGERdecPartie1  go to state 12
+    FLOATdecPartie1    go to state 13
+    STRusePartie2      go to state 14
+    STRdec             go to state 15
+    STRuse             go to state 16
+
+
+State 82
+
+    9 declaration: CONST IDF AFF REEL ';' declaration .
+
+    $default  reduce using rule 9 (declaration)
+
+
+State 83
+
+    7 declaration: CONST IDF AFF ENTIER ';' declaration .
+
+    $default  reduce using rule 7 (declaration)
+
+
+State 84
+
+   10 declaration: CONST IDF AFF REEL_SGN ';' declaration .
+
+    $default  reduce using rule 10 (declaration)
+
+
+State 85
+
+    8 declaration: CONST IDF AFF ENTIER_SGN ';' declaration .
+
+    $default  reduce using rule 8 (declaration)
+
+
+State 86
+
+   24 NUMBER: . ENTIER
+   25       | . REEL
+   26       | . ENTIER_SGN
+   27       | . REEL_SGN
+   42 IFpartie1: IF '(' . condition
+   49 condition: . condition OR condition
+   50          | . condition AND condition
+   51          | . NOT '(' condition ')'
+   52          | . exp G exp
+   53          | . exp GE exp
+   54          | . exp L exp
+   55          | . exp LE exp
+   56          | . exp E exp
+   57          | . exp NE exp
+   58          | . NUMBER
+   59 exp: . exp SUB term
+   60    | . exp ADD term
+   61    | . term
+   62 term: . term MUL factor
+   63     | . term DIV factor
+   64     | . factor
+   65 factor: . IDF
+   66       | . IDF '[' ENTIER ']'
+   67       | . IDF '[' IDF ']'
+   68       | . IDF '.' IDF
+   69       | . NUMBER
+   70       | . '(' exp ')'
+
+    IDF         shift, and go to state 108
+    REEL        shift, and go to state 109
+    ENTIER      shift, and go to state 110
+    REEL_SGN    shift, and go to state 111
+    ENTIER_SGN  shift, and go to state 112
+    '('         shift, and go to state 113
+    NOT         shift, and go to state 114
+
+    NUMBER     go to state 115
+    condition  go to state 116
+    exp        go to state 117
+    term       go to state 118
+    factor     go to state 119
+
+
+State 87
+
+   46 FORpartie1: FOR '(' . IDF
+
+    IDF  shift, and go to state 120
+
+
+State 88
+
+   24 NUMBER: . ENTIER
+   25       | . REEL
+   26       | . ENTIER_SGN
+   27       | . REEL_SGN
+   48 WHILEpartie1: WHILE '(' . condition
+   49 condition: . condition OR condition
+   50          | . condition AND condition
+   51          | . NOT '(' condition ')'
+   52          | . exp G exp
+   53          | . exp GE exp
+   54          | . exp L exp
+   55          | . exp LE exp
+   56          | . exp E exp
+   57          | . exp NE exp
+   58          | . NUMBER
+   59 exp: . exp SUB term
+   60    | . exp ADD term
+   61    | . term
+   62 term: . term MUL factor
+   63     | . term DIV factor
+   64     | . factor
+   65 factor: . IDF
+   66       | . IDF '[' ENTIER ']'
+   67       | . IDF '[' IDF ']'
+   68       | . IDF '.' IDF
+   69       | . NUMBER
+   70       | . '(' exp ')'
+
+    IDF         shift, and go to state 108
+    REEL        shift, and go to state 109
+    ENTIER      shift, and go to state 110
+    REEL_SGN    shift, and go to state 111
+    ENTIER_SGN  shift, and go to state 112
+    '('         shift, and go to state 113
+    NOT         shift, and go to state 114
+
+    NUMBER     go to state 115
+    condition  go to state 121
+    exp        go to state 117
+    term       go to state 118
+    factor     go to state 119
+
+
+State 89
+
+   24 NUMBER: . ENTIER
+   25       | . REEL
+   26       | . ENTIER_SGN
+   27       | . REEL_SGN
+   36 INSTaff: IDF AFF . exp
+   59 exp: . exp SUB term
+   60    | . exp ADD term
+   61    | . term
+   62 term: . term MUL factor
+   63     | . term DIV factor
+   64     | . factor
+   65 factor: . IDF
+   66       | . IDF '[' ENTIER ']'
+   67       | . IDF '[' IDF ']'
+   68       | . IDF '.' IDF
+   69       | . NUMBER
+   70       | . '(' exp ')'
+
+    IDF         shift, and go to state 108
+    REEL        shift, and go to state 109
+    ENTIER      shift, and go to state 110
+    REEL_SGN    shift, and go to state 111
+    ENTIER_SGN  shift, and go to state 112
+    '('         shift, and go to state 113
+
+    NUMBER  go to state 122
+    exp     go to state 123
+    term    go to state 118
+    factor  go to state 119
+
+
+State 90
+
+   38 INSTaff3: IDF '[' . ENTIER ']' AFF exp
+   39 INSTaff4: IDF '[' . IDF ']' AFF exp
+
+    IDF     shift, and go to state 124
+    ENTIER  shift, and go to state 125
+
+
+State 91
+
+   37 INSTaff2: IDF '.' . IDF AFF exp
+
+    IDF  shift, and go to state 126
+
+
+State 92
+
+    1 S: IDF '{' VAR '{' declaration '}' CODE '{' instruction '}' . '}'
+
+    '}'  shift, and go to state 127
+
+
+State 93
+
+   28 instruction: . INSTaff ';' instruction
+   28            | INSTaff ';' . instruction
+   29            | . INSTaff2 ';' instruction
+   30            | . INSTaff3 ';' instruction
+   31            | . INSTaff4 ';' instruction
+   32            | . IFpartie3 '}' instruction
+   33            | . FORpartie4 '}' instruction
+   34            | . WHILEpartie2 '}' instruction
+   35            | . %empty
+   36 INSTaff: . IDF AFF exp
+   37 INSTaff2: . IDF '.' IDF AFF exp
+   38 INSTaff3: . IDF '[' ENTIER ']' AFF exp
+   39 INSTaff4: . IDF '[' IDF ']' AFF exp
+   40 IFpartie3: . IFpartie2 '}' ELSE '{' instruction
+   41 IFpartie2: . IFpartie1 ')' '{' instruction
+   42 IFpartie1: . IF '(' condition
+   43 FORpartie4: . FORpartie3 ')' '{' instruction
+   44 FORpartie3: . FORpartie2 ':' ENTIER ':' condition
+   45 FORpartie2: . FORpartie1 ':' ENTIER
+   46 FORpartie1: . FOR '(' IDF
+   47 WHILEpartie2: . WHILEpartie1 ')' '{' instruction
+   48 WHILEpartie1: . WHILE '(' condition
+
+    IF     shift, and go to state 62
+    FOR    shift, and go to state 63
+    WHILE  shift, and go to state 64
+    IDF    shift, and go to state 65
+
+    $default  reduce using rule 35 (instruction)
+
+    instruction   go to state 128
+    INSTaff       go to state 67
+    INSTaff2      go to state 68
+    INSTaff3      go to state 69
+    INSTaff4      go to state 70
+    IFpartie3     go to state 71
+    IFpartie2     go to state 72
+    IFpartie1     go to state 73
+    FORpartie4    go to state 74
+    FORpartie3    go to state 75
+    FORpartie2    go to state 76
+    FORpartie1    go to state 77
+    WHILEpartie2  go to state 78
+    WHILEpartie1  go to state 79
+
+
+State 94
+
+   28 instruction: . INSTaff ';' instruction
+   29            | . INSTaff2 ';' instruction
+   29            | INSTaff2 ';' . instruction
+   30            | . INSTaff3 ';' instruction
+   31            | . INSTaff4 ';' instruction
+   32            | . IFpartie3 '}' instruction
+   33            | . FORpartie4 '}' instruction
+   34            | . WHILEpartie2 '}' instruction
+   35            | . %empty
+   36 INSTaff: . IDF AFF exp
+   37 INSTaff2: . IDF '.' IDF AFF exp
+   38 INSTaff3: . IDF '[' ENTIER ']' AFF exp
+   39 INSTaff4: . IDF '[' IDF ']' AFF exp
+   40 IFpartie3: . IFpartie2 '}' ELSE '{' instruction
+   41 IFpartie2: . IFpartie1 ')' '{' instruction
+   42 IFpartie1: . IF '(' condition
+   43 FORpartie4: . FORpartie3 ')' '{' instruction
+   44 FORpartie3: . FORpartie2 ':' ENTIER ':' condition
+   45 FORpartie2: . FORpartie1 ':' ENTIER
+   46 FORpartie1: . FOR '(' IDF
+   47 WHILEpartie2: . WHILEpartie1 ')' '{' instruction
+   48 WHILEpartie1: . WHILE '(' condition
+
+    IF     shift, and go to state 62
+    FOR    shift, and go to state 63
+    WHILE  shift, and go to state 64
+    IDF    shift, and go to state 65
+
+    $default  reduce using rule 35 (instruction)
+
+    instruction   go to state 129
+    INSTaff       go to state 67
+    INSTaff2      go to state 68
+    INSTaff3      go to state 69
+    INSTaff4      go to state 70
+    IFpartie3     go to state 71
+    IFpartie2     go to state 72
+    IFpartie1     go to state 73
+    FORpartie4    go to state 74
+    FORpartie3    go to state 75
+    FORpartie2    go to state 76
+    FORpartie1    go to state 77
+    WHILEpartie2  go to state 78
+    WHILEpartie1  go to state 79
+
+
+State 95
+
+   28 instruction: . INSTaff ';' instruction
+   29            | . INSTaff2 ';' instruction
+   30            | . INSTaff3 ';' instruction
+   30            | INSTaff3 ';' . instruction
+   31            | . INSTaff4 ';' instruction
+   32            | . IFpartie3 '}' instruction
+   33            | . FORpartie4 '}' instruction
+   34            | . WHILEpartie2 '}' instruction
+   35            | . %empty
+   36 INSTaff: . IDF AFF exp
+   37 INSTaff2: . IDF '.' IDF AFF exp
+   38 INSTaff3: . IDF '[' ENTIER ']' AFF exp
+   39 INSTaff4: . IDF '[' IDF ']' AFF exp
+   40 IFpartie3: . IFpartie2 '}' ELSE '{' instruction
+   41 IFpartie2: . IFpartie1 ')' '{' instruction
+   42 IFpartie1: . IF '(' condition
+   43 FORpartie4: . FORpartie3 ')' '{' instruction
+   44 FORpartie3: . FORpartie2 ':' ENTIER ':' condition
+   45 FORpartie2: . FORpartie1 ':' ENTIER
+   46 FORpartie1: . FOR '(' IDF
+   47 WHILEpartie2: . WHILEpartie1 ')' '{' instruction
+   48 WHILEpartie1: . WHILE '(' condition
+
+    IF     shift, and go to state 62
+    FOR    shift, and go to state 63
+    WHILE  shift, and go to state 64
+    IDF    shift, and go to state 65
+
+    $default  reduce using rule 35 (instruction)
+
+    instruction   go to state 130
+    INSTaff       go to state 67
+    INSTaff2      go to state 68
+    INSTaff3      go to state 69
+    INSTaff4      go to state 70
+    IFpartie3     go to state 71
+    IFpartie2     go to state 72
+    IFpartie1     go to state 73
+    FORpartie4    go to state 74
+    FORpartie3    go to state 75
+    FORpartie2    go to state 76
+    FORpartie1    go to state 77
+    WHILEpartie2  go to state 78
+    WHILEpartie1  go to state 79
+
+
+State 96
+
+   28 instruction: . INSTaff ';' instruction
+   29            | . INSTaff2 ';' instruction
+   30            | . INSTaff3 ';' instruction
+   31            | . INSTaff4 ';' instruction
+   31            | INSTaff4 ';' . instruction
+   32            | . IFpartie3 '}' instruction
+   33            | . FORpartie4 '}' instruction
+   34            | . WHILEpartie2 '}' instruction
+   35            | . %empty
+   36 INSTaff: . IDF AFF exp
+   37 INSTaff2: . IDF '.' IDF AFF exp
+   38 INSTaff3: . IDF '[' ENTIER ']' AFF exp
+   39 INSTaff4: . IDF '[' IDF ']' AFF exp
+   40 IFpartie3: . IFpartie2 '}' ELSE '{' instruction
+   41 IFpartie2: . IFpartie1 ')' '{' instruction
+   42 IFpartie1: . IF '(' condition
+   43 FORpartie4: . FORpartie3 ')' '{' instruction
+   44 FORpartie3: . FORpartie2 ':' ENTIER ':' condition
+   45 FORpartie2: . FORpartie1 ':' ENTIER
+   46 FORpartie1: . FOR '(' IDF
+   47 WHILEpartie2: . WHILEpartie1 ')' '{' instruction
+   48 WHILEpartie1: . WHILE '(' condition
+
+    IF     shift, and go to state 62
+    FOR    shift, and go to state 63
+    WHILE  shift, and go to state 64
+    IDF    shift, and go to state 65
+
+    $default  reduce using rule 35 (instruction)
+
+    instruction   go to state 131
+    INSTaff       go to state 67
+    INSTaff2      go to state 68
+    INSTaff3      go to state 69
+    INSTaff4      go to state 70
+    IFpartie3     go to state 71
+    IFpartie2     go to state 72
+    IFpartie1     go to state 73
+    FORpartie4    go to state 74
+    FORpartie3    go to state 75
+    FORpartie2    go to state 76
+    FORpartie1    go to state 77
+    WHILEpartie2  go to state 78
+    WHILEpartie1  go to state 79
+
+
+State 97
+
+   28 instruction: . INSTaff ';' instruction
+   29            | . INSTaff2 ';' instruction
+   30            | . INSTaff3 ';' instruction
+   31            | . INSTaff4 ';' instruction
+   32            | . IFpartie3 '}' instruction
+   32            | IFpartie3 '}' . instruction
+   33            | . FORpartie4 '}' instruction
+   34            | . WHILEpartie2 '}' instruction
+   35            | . %empty
+   36 INSTaff: . IDF AFF exp
+   37 INSTaff2: . IDF '.' IDF AFF exp
+   38 INSTaff3: . IDF '[' ENTIER ']' AFF exp
+   39 INSTaff4: . IDF '[' IDF ']' AFF exp
+   40 IFpartie3: . IFpartie2 '}' ELSE '{' instruction
+   41 IFpartie2: . IFpartie1 ')' '{' instruction
+   42 IFpartie1: . IF '(' condition
+   43 FORpartie4: . FORpartie3 ')' '{' instruction
+   44 FORpartie3: . FORpartie2 ':' ENTIER ':' condition
+   45 FORpartie2: . FORpartie1 ':' ENTIER
+   46 FORpartie1: . FOR '(' IDF
+   47 WHILEpartie2: . WHILEpartie1 ')' '{' instruction
+   48 WHILEpartie1: . WHILE '(' condition
+
+    IF     shift, and go to state 62
+    FOR    shift, and go to state 63
+    WHILE  shift, and go to state 64
+    IDF    shift, and go to state 65
+
+    $default  reduce using rule 35 (instruction)
+
+    instruction   go to state 132
+    INSTaff       go to state 67
+    INSTaff2      go to state 68
+    INSTaff3      go to state 69
+    INSTaff4      go to state 70
+    IFpartie3     go to state 71
+    IFpartie2     go to state 72
+    IFpartie1     go to state 73
+    FORpartie4    go to state 74
+    FORpartie3    go to state 75
+    FORpartie2    go to state 76
+    FORpartie1    go to state 77
+    WHILEpartie2  go to state 78
+    WHILEpartie1  go to state 79
+
+
+State 98
+
+   40 IFpartie3: IFpartie2 '}' . ELSE '{' instruction
+
+    ELSE  shift, and go to state 133
+
+
+State 99
+
+   41 IFpartie2: IFpartie1 ')' . '{' instruction
+
+    '{'  shift, and go to state 134
+
+
+State 100
+
+   28 instruction: . INSTaff ';' instruction
+   29            | . INSTaff2 ';' instruction
+   30            | . INSTaff3 ';' instruction
+   31            | . INSTaff4 ';' instruction
+   32            | . IFpartie3 '}' instruction
+   33            | . FORpartie4 '}' instruction
+   33            | FORpartie4 '}' . instruction
+   34            | . WHILEpartie2 '}' instruction
+   35            | . %empty
+   36 INSTaff: . IDF AFF exp
+   37 INSTaff2: . IDF '.' IDF AFF exp
+   38 INSTaff3: . IDF '[' ENTIER ']' AFF exp
+   39 INSTaff4: . IDF '[' IDF ']' AFF exp
+   40 IFpartie3: . IFpartie2 '}' ELSE '{' instruction
+   41 IFpartie2: . IFpartie1 ')' '{' instruction
+   42 IFpartie1: . IF '(' condition
+   43 FORpartie4: . FORpartie3 ')' '{' instruction
+   44 FORpartie3: . FORpartie2 ':' ENTIER ':' condition
+   45 FORpartie2: . FORpartie1 ':' ENTIER
+   46 FORpartie1: . FOR '(' IDF
+   47 WHILEpartie2: . WHILEpartie1 ')' '{' instruction
+   48 WHILEpartie1: . WHILE '(' condition
+
+    IF     shift, and go to state 62
+    FOR    shift, and go to state 63
+    WHILE  shift, and go to state 64
+    IDF    shift, and go to state 65
+
+    $default  reduce using rule 35 (instruction)
+
+    instruction   go to state 135
+    INSTaff       go to state 67
+    INSTaff2      go to state 68
+    INSTaff3      go to state 69
+    INSTaff4      go to state 70
+    IFpartie3     go to state 71
+    IFpartie2     go to state 72
+    IFpartie1     go to state 73
+    FORpartie4    go to state 74
+    FORpartie3    go to state 75
+    FORpartie2    go to state 76
+    FORpartie1    go to state 77
+    WHILEpartie2  go to state 78
+    WHILEpartie1  go to state 79
+
+
+State 101
+
+   43 FORpartie4: FORpartie3 ')' . '{' instruction
+
+    '{'  shift, and go to state 136
+
+
+State 102
+
+   44 FORpartie3: FORpartie2 ':' . ENTIER ':' condition
+
+    ENTIER  shift, and go to state 137
+
+
+State 103
+
+   45 FORpartie2: FORpartie1 ':' . ENTIER
+
+    ENTIER  shift, and go to state 138
+
+
+State 104
+
+   28 instruction: . INSTaff ';' instruction
+   29            | . INSTaff2 ';' instruction
+   30            | . INSTaff3 ';' instruction
+   31            | . INSTaff4 ';' instruction
+   32            | . IFpartie3 '}' instruction
+   33            | . FORpartie4 '}' instruction
+   34            | . WHILEpartie2 '}' instruction
+   34            | WHILEpartie2 '}' . instruction
+   35            | . %empty
+   36 INSTaff: . IDF AFF exp
+   37 INSTaff2: . IDF '.' IDF AFF exp
+   38 INSTaff3: . IDF '[' ENTIER ']' AFF exp
+   39 INSTaff4: . IDF '[' IDF ']' AFF exp
+   40 IFpartie3: . IFpartie2 '}' ELSE '{' instruction
+   41 IFpartie2: . IFpartie1 ')' '{' instruction
+   42 IFpartie1: . IF '(' condition
+   43 FORpartie4: . FORpartie3 ')' '{' instruction
+   44 FORpartie3: . FORpartie2 ':' ENTIER ':' condition
+   45 FORpartie2: . FORpartie1 ':' ENTIER
+   46 FORpartie1: . FOR '(' IDF
+   47 WHILEpartie2: . WHILEpartie1 ')' '{' instruction
+   48 WHILEpartie1: . WHILE '(' condition
+
+    IF     shift, and go to state 62
+    FOR    shift, and go to state 63
+    WHILE  shift, and go to state 64
+    IDF    shift, and go to state 65
+
+    $default  reduce using rule 35 (instruction)
+
+    instruction   go to state 139
+    INSTaff       go to state 67
+    INSTaff2      go to state 68
+    INSTaff3      go to state 69
+    INSTaff4      go to state 70
+    IFpartie3     go to state 71
+    IFpartie2     go to state 72
+    IFpartie1     go to state 73
+    FORpartie4    go to state 74
+    FORpartie3    go to state 75
+    FORpartie2    go to state 76
+    FORpartie1    go to state 77
+    WHILEpartie2  go to state 78
+    WHILEpartie1  go to state 79
+
+
+State 105
+
+   47 WHILEpartie2: WHILEpartie1 ')' . '{' instruction
+
+    '{'  shift, and go to state 140
+
+
+State 106
+
+    3 declaration: INTEGER IDF '[' ENTIER ']' ';' declaration .
+
+    $default  reduce using rule 3 (declaration)
+
+
+State 107
+
+    5 declaration: FLOAT IDF '[' ENTIER ']' ';' declaration .
+
+    $default  reduce using rule 5 (declaration)
+
+
+State 108
+
+   65 factor: IDF .
+   66       | IDF . '[' ENTIER ']'
+   67       | IDF . '[' IDF ']'
+   68       | IDF . '.' IDF
+
+    '['  shift, and go to state 141
+    '.'  shift, and go to state 142
+
+    $default  reduce using rule 65 (factor)
+
+
+State 109
+
+   25 NUMBER: REEL .
+
+    $default  reduce using rule 25 (NUMBER)
+
+
+State 110
+
+   24 NUMBER: ENTIER .
+
+    $default  reduce using rule 24 (NUMBER)
+
+
+State 111
+
+   27 NUMBER: REEL_SGN .
+
+    $default  reduce using rule 27 (NUMBER)
+
+
+State 112
+
+   26 NUMBER: ENTIER_SGN .
+
+    $default  reduce using rule 26 (NUMBER)
+
+
+State 113
+
+   24 NUMBER: . ENTIER
+   25       | . REEL
+   26       | . ENTIER_SGN
+   27       | . REEL_SGN
+   59 exp: . exp SUB term
+   60    | . exp ADD term
+   61    | . term
+   62 term: . term MUL factor
+   63     | . term DIV factor
+   64     | . factor
+   65 factor: . IDF
+   66       | . IDF '[' ENTIER ']'
+   67       | . IDF '[' IDF ']'
+   68       | . IDF '.' IDF
+   69       | . NUMBER
+   70       | . '(' exp ')'
+   70       | '(' . exp ')'
+
+    IDF         shift, and go to state 108
+    REEL        shift, and go to state 109
+    ENTIER      shift, and go to state 110
+    REEL_SGN    shift, and go to state 111
+    ENTIER_SGN  shift, and go to state 112
+    '('         shift, and go to state 113
+
+    NUMBER  go to state 122
+    exp     go to state 143
+    term    go to state 118
+    factor  go to state 119
+
+
+State 114
+
+   51 condition: NOT . '(' condition ')'
+
+    '('  shift, and go to state 144
+
+
+State 115
+
+   58 condition: NUMBER .
+   69 factor: NUMBER .
+
+    ')'       reduce using rule 58 (condition)
+    OR        reduce using rule 58 (condition)
+    AND       reduce using rule 58 (condition)
+    $default  reduce using rule 69 (factor)
+
+
+State 116
+
+   42 IFpartie1: IF '(' condition .
+   49 condition: condition . OR condition
+   50          | condition . AND condition
+
+    OR   shift, and go to state 145
+    AND  shift, and go to state 146
+
+    $default  reduce using rule 42 (IFpartie1)
+
+
+State 117
+
+   52 condition: exp . G exp
+   53          | exp . GE exp
+   54          | exp . L exp
+   55          | exp . LE exp
+   56          | exp . E exp
+   57          | exp . NE exp
+   59 exp: exp . SUB term
+   60    | exp . ADD term
+
+    ADD  shift, and go to state 147
+    SUB  shift, and go to state 148
+    G    shift, and go to state 149
+    GE   shift, and go to state 150
+    L    shift, and go to state 151
+    LE   shift, and go to state 152
+    E    shift, and go to state 153
+    NE   shift, and go to state 154
+
+
+State 118
+
+   61 exp: term .
+   62 term: term . MUL factor
+   63     | term . DIV factor
+
+    MUL  shift, and go to state 155
+    DIV  shift, and go to state 156
+
+    $default  reduce using rule 61 (exp)
+
+
+State 119
+
+   64 term: factor .
+
+    $default  reduce using rule 64 (term)
+
+
+State 120
+
+   46 FORpartie1: FOR '(' IDF .
+
+    $default  reduce using rule 46 (FORpartie1)
+
+
+State 121
+
+   48 WHILEpartie1: WHILE '(' condition .
+   49 condition: condition . OR condition
+   50          | condition . AND condition
+
+    OR   shift, and go to state 145
+    AND  shift, and go to state 146
+
+    $default  reduce using rule 48 (WHILEpartie1)
+
+
+State 122
+
+   69 factor: NUMBER .
+
+    $default  reduce using rule 69 (factor)
+
+
+State 123
+
+   36 INSTaff: IDF AFF exp .
+   59 exp: exp . SUB term
+   60    | exp . ADD term
+
+    ADD  shift, and go to state 147
+    SUB  shift, and go to state 148
+
+    $default  reduce using rule 36 (INSTaff)
+
+
+State 124
+
+   39 INSTaff4: IDF '[' IDF . ']' AFF exp
+
+    ']'  shift, and go to state 157
+
+
+State 125
+
+   38 INSTaff3: IDF '[' ENTIER . ']' AFF exp
+
+    ']'  shift, and go to state 158
+
+
+State 126
+
+   37 INSTaff2: IDF '.' IDF . AFF exp
+
+    AFF  shift, and go to state 159
+
+
+State 127
+
+    1 S: IDF '{' VAR '{' declaration '}' CODE '{' instruction '}' '}' .
+
+    $default  reduce using rule 1 (S)
+
+
+State 128
+
+   28 instruction: INSTaff ';' instruction .
+
+    $default  reduce using rule 28 (instruction)
+
+
+State 129
+
+   29 instruction: INSTaff2 ';' instruction .
+
+    $default  reduce using rule 29 (instruction)
+
+
+State 130
+
+   30 instruction: INSTaff3 ';' instruction .
+
+    $default  reduce using rule 30 (instruction)
+
+
+State 131
+
+   31 instruction: INSTaff4 ';' instruction .
+
+    $default  reduce using rule 31 (instruction)
+
+
+State 132
+
+   32 instruction: IFpartie3 '}' instruction .
+
+    $default  reduce using rule 32 (instruction)
+
+
+State 133
+
+   40 IFpartie3: IFpartie2 '}' ELSE . '{' instruction
+
+    '{'  shift, and go to state 160
+
+
+State 134
+
+   28 instruction: . INSTaff ';' instruction
+   29            | . INSTaff2 ';' instruction
+   30            | . INSTaff3 ';' instruction
+   31            | . INSTaff4 ';' instruction
+   32            | . IFpartie3 '}' instruction
+   33            | . FORpartie4 '}' instruction
+   34            | . WHILEpartie2 '}' instruction
+   35            | . %empty
+   36 INSTaff: . IDF AFF exp
+   37 INSTaff2: . IDF '.' IDF AFF exp
+   38 INSTaff3: . IDF '[' ENTIER ']' AFF exp
+   39 INSTaff4: . IDF '[' IDF ']' AFF exp
+   40 IFpartie3: . IFpartie2 '}' ELSE '{' instruction
+   41 IFpartie2: . IFpartie1 ')' '{' instruction
+   41          | IFpartie1 ')' '{' . instruction
+   42 IFpartie1: . IF '(' condition
+   43 FORpartie4: . FORpartie3 ')' '{' instruction
+   44 FORpartie3: . FORpartie2 ':' ENTIER ':' condition
+   45 FORpartie2: . FORpartie1 ':' ENTIER
+   46 FORpartie1: . FOR '(' IDF
+   47 WHILEpartie2: . WHILEpartie1 ')' '{' instruction
+   48 WHILEpartie1: . WHILE '(' condition
+
+    IF     shift, and go to state 62
+    FOR    shift, and go to state 63
+    WHILE  shift, and go to state 64
+    IDF    shift, and go to state 65
+
+    $default  reduce using rule 35 (instruction)
+
+    instruction   go to state 161
+    INSTaff       go to state 67
+    INSTaff2      go to state 68
+    INSTaff3      go to state 69
+    INSTaff4      go to state 70
+    IFpartie3     go to state 71
+    IFpartie2     go to state 72
+    IFpartie1     go to state 73
+    FORpartie4    go to state 74
+    FORpartie3    go to state 75
+    FORpartie2    go to state 76
+    FORpartie1    go to state 77
+    WHILEpartie2  go to state 78
+    WHILEpartie1  go to state 79
+
+
+State 135
+
+   33 instruction: FORpartie4 '}' instruction .
+
+    $default  reduce using rule 33 (instruction)
+
+
+State 136
+
+   28 instruction: . INSTaff ';' instruction
+   29            | . INSTaff2 ';' instruction
+   30            | . INSTaff3 ';' instruction
+   31            | . INSTaff4 ';' instruction
+   32            | . IFpartie3 '}' instruction
+   33            | . FORpartie4 '}' instruction
+   34            | . WHILEpartie2 '}' instruction
+   35            | . %empty
+   36 INSTaff: . IDF AFF exp
+   37 INSTaff2: . IDF '.' IDF AFF exp
+   38 INSTaff3: . IDF '[' ENTIER ']' AFF exp
+   39 INSTaff4: . IDF '[' IDF ']' AFF exp
+   40 IFpartie3: . IFpartie2 '}' ELSE '{' instruction
+   41 IFpartie2: . IFpartie1 ')' '{' instruction
+   42 IFpartie1: . IF '(' condition
+   43 FORpartie4: . FORpartie3 ')' '{' instruction
+   43           | FORpartie3 ')' '{' . instruction
+   44 FORpartie3: . FORpartie2 ':' ENTIER ':' condition
+   45 FORpartie2: . FORpartie1 ':' ENTIER
+   46 FORpartie1: . FOR '(' IDF
+   47 WHILEpartie2: . WHILEpartie1 ')' '{' instruction
+   48 WHILEpartie1: . WHILE '(' condition
+
+    IF     shift, and go to state 62
+    FOR    shift, and go to state 63
+    WHILE  shift, and go to state 64
+    IDF    shift, and go to state 65
+
+    $default  reduce using rule 35 (instruction)
+
+    instruction   go to state 162
+    INSTaff       go to state 67
+    INSTaff2      go to state 68
+    INSTaff3      go to state 69
+    INSTaff4      go to state 70
+    IFpartie3     go to state 71
+    IFpartie2     go to state 72
+    IFpartie1     go to state 73
+    FORpartie4    go to state 74
+    FORpartie3    go to state 75
+    FORpartie2    go to state 76
+    FORpartie1    go to state 77
+    WHILEpartie2  go to state 78
+    WHILEpartie1  go to state 79
+
+
+State 137
+
+   44 FORpartie3: FORpartie2 ':' ENTIER . ':' condition
+
+    ':'  shift, and go to state 163
+
+
+State 138
+
+   45 FORpartie2: FORpartie1 ':' ENTIER .
+
+    $default  reduce using rule 45 (FORpartie2)
+
+
+State 139
+
+   34 instruction: WHILEpartie2 '}' instruction .
+
+    $default  reduce using rule 34 (instruction)
+
+
+State 140
+
+   28 instruction: . INSTaff ';' instruction
+   29            | . INSTaff2 ';' instruction
+   30            | . INSTaff3 ';' instruction
+   31            | . INSTaff4 ';' instruction
+   32            | . IFpartie3 '}' instruction
+   33            | . FORpartie4 '}' instruction
+   34            | . WHILEpartie2 '}' instruction
+   35            | . %empty
+   36 INSTaff: . IDF AFF exp
+   37 INSTaff2: . IDF '.' IDF AFF exp
+   38 INSTaff3: . IDF '[' ENTIER ']' AFF exp
+   39 INSTaff4: . IDF '[' IDF ']' AFF exp
+   40 IFpartie3: . IFpartie2 '}' ELSE '{' instruction
+   41 IFpartie2: . IFpartie1 ')' '{' instruction
+   42 IFpartie1: . IF '(' condition
+   43 FORpartie4: . FORpartie3 ')' '{' instruction
+   44 FORpartie3: . FORpartie2 ':' ENTIER ':' condition
+   45 FORpartie2: . FORpartie1 ':' ENTIER
+   46 FORpartie1: . FOR '(' IDF
+   47 WHILEpartie2: . WHILEpartie1 ')' '{' instruction
+   47             | WHILEpartie1 ')' '{' . instruction
+   48 WHILEpartie1: . WHILE '(' condition
+
+    IF     shift, and go to state 62
+    FOR    shift, and go to state 63
+    WHILE  shift, and go to state 64
+    IDF    shift, and go to state 65
+
+    $default  reduce using rule 35 (instruction)
+
+    instruction   go to state 164
+    INSTaff       go to state 67
+    INSTaff2      go to state 68
+    INSTaff3      go to state 69
+    INSTaff4      go to state 70
+    IFpartie3     go to state 71
+    IFpartie2     go to state 72
+    IFpartie1     go to state 73
+    FORpartie4    go to state 74
+    FORpartie3    go to state 75
+    FORpartie2    go to state 76
+    FORpartie1    go to state 77
+    WHILEpartie2  go to state 78
+    WHILEpartie1  go to state 79
+
+
+State 141
+
+   66 factor: IDF '[' . ENTIER ']'
+   67       | IDF '[' . IDF ']'
+
+    IDF     shift, and go to state 165
+    ENTIER  shift, and go to state 166
+
+
+State 142
+
+   68 factor: IDF '.' . IDF
+
+    IDF  shift, and go to state 167
+
+
+State 143
+
+   59 exp: exp . SUB term
+   60    | exp . ADD term
+   70 factor: '(' exp . ')'
+
+    ADD  shift, and go to state 147
+    SUB  shift, and go to state 148
+    ')'  shift, and go to state 168
+
+
+State 144
+
+   24 NUMBER: . ENTIER
+   25       | . REEL
+   26       | . ENTIER_SGN
+   27       | . REEL_SGN
+   49 condition: . condition OR condition
+   50          | . condition AND condition
+   51          | . NOT '(' condition ')'
+   51          | NOT '(' . condition ')'
+   52          | . exp G exp
+   53          | . exp GE exp
+   54          | . exp L exp
+   55          | . exp LE exp
+   56          | . exp E exp
+   57          | . exp NE exp
+   58          | . NUMBER
+   59 exp: . exp SUB term
+   60    | . exp ADD term
+   61    | . term
+   62 term: . term MUL factor
+   63     | . term DIV factor
+   64     | . factor
+   65 factor: . IDF
+   66       | . IDF '[' ENTIER ']'
+   67       | . IDF '[' IDF ']'
+   68       | . IDF '.' IDF
+   69       | . NUMBER
+   70       | . '(' exp ')'
+
+    IDF         shift, and go to state 108
+    REEL        shift, and go to state 109
+    ENTIER      shift, and go to state 110
+    REEL_SGN    shift, and go to state 111
+    ENTIER_SGN  shift, and go to state 112
+    '('         shift, and go to state 113
+    NOT         shift, and go to state 114
+
+    NUMBER     go to state 115
+    condition  go to state 169
+    exp        go to state 117
+    term       go to state 118
+    factor     go to state 119
+
+
+State 145
+
+   24 NUMBER: . ENTIER
+   25       | . REEL
+   26       | . ENTIER_SGN
+   27       | . REEL_SGN
+   49 condition: . condition OR condition
+   49          | condition OR . condition
+   50          | . condition AND condition
+   51          | . NOT '(' condition ')'
+   52          | . exp G exp
+   53          | . exp GE exp
+   54          | . exp L exp
+   55          | . exp LE exp
+   56          | . exp E exp
+   57          | . exp NE exp
+   58          | . NUMBER
+   59 exp: . exp SUB term
+   60    | . exp ADD term
+   61    | . term
+   62 term: . term MUL factor
+   63     | . term DIV factor
+   64     | . factor
+   65 factor: . IDF
+   66       | . IDF '[' ENTIER ']'
+   67       | . IDF '[' IDF ']'
+   68       | . IDF '.' IDF
+   69       | . NUMBER
+   70       | . '(' exp ')'
+
+    IDF         shift, and go to state 108
+    REEL        shift, and go to state 109
+    ENTIER      shift, and go to state 110
+    REEL_SGN    shift, and go to state 111
+    ENTIER_SGN  shift, and go to state 112
+    '('         shift, and go to state 113
+    NOT         shift, and go to state 114
+
+    NUMBER     go to state 115
+    condition  go to state 170
+    exp        go to state 117
+    term       go to state 118
+    factor     go to state 119
+
+
+State 146
+
+   24 NUMBER: . ENTIER
+   25       | . REEL
+   26       | . ENTIER_SGN
+   27       | . REEL_SGN
+   49 condition: . condition OR condition
+   50          | . condition AND condition
+   50          | condition AND . condition
+   51          | . NOT '(' condition ')'
+   52          | . exp G exp
+   53          | . exp GE exp
+   54          | . exp L exp
+   55          | . exp LE exp
+   56          | . exp E exp
+   57          | . exp NE exp
+   58          | . NUMBER
+   59 exp: . exp SUB term
+   60    | . exp ADD term
+   61    | . term
+   62 term: . term MUL factor
+   63     | . term DIV factor
+   64     | . factor
+   65 factor: . IDF
+   66       | . IDF '[' ENTIER ']'
+   67       | . IDF '[' IDF ']'
+   68       | . IDF '.' IDF
+   69       | . NUMBER
+   70       | . '(' exp ')'
+
+    IDF         shift, and go to state 108
+    REEL        shift, and go to state 109
+    ENTIER      shift, and go to state 110
+    REEL_SGN    shift, and go to state 111
+    ENTIER_SGN  shift, and go to state 112
+    '('         shift, and go to state 113
+    NOT         shift, and go to state 114
+
+    NUMBER     go to state 115
+    condition  go to state 171
+    exp        go to state 117
+    term       go to state 118
+    factor     go to state 119
+
+
+State 147
+
+   24 NUMBER: . ENTIER
+   25       | . REEL
+   26       | . ENTIER_SGN
+   27       | . REEL_SGN
+   60 exp: exp ADD . term
+   62 term: . term MUL factor
+   63     | . term DIV factor
+   64     | . factor
+   65 factor: . IDF
+   66       | . IDF '[' ENTIER ']'
+   67       | . IDF '[' IDF ']'
+   68       | . IDF '.' IDF
+   69       | . NUMBER
+   70       | . '(' exp ')'
+
+    IDF         shift, and go to state 108
+    REEL        shift, and go to state 109
+    ENTIER      shift, and go to state 110
+    REEL_SGN    shift, and go to state 111
+    ENTIER_SGN  shift, and go to state 112
+    '('         shift, and go to state 113
+
+    NUMBER  go to state 122
+    term    go to state 172
+    factor  go to state 119
+
+
+State 148
+
+   24 NUMBER: . ENTIER
+   25       | . REEL
+   26       | . ENTIER_SGN
+   27       | . REEL_SGN
+   59 exp: exp SUB . term
+   62 term: . term MUL factor
+   63     | . term DIV factor
+   64     | . factor
+   65 factor: . IDF
+   66       | . IDF '[' ENTIER ']'
+   67       | . IDF '[' IDF ']'
+   68       | . IDF '.' IDF
+   69       | . NUMBER
+   70       | . '(' exp ')'
+
+    IDF         shift, and go to state 108
+    REEL        shift, and go to state 109
+    ENTIER      shift, and go to state 110
+    REEL_SGN    shift, and go to state 111
+    ENTIER_SGN  shift, and go to state 112
+    '('         shift, and go to state 113
+
+    NUMBER  go to state 122
+    term    go to state 173
+    factor  go to state 119
+
+
+State 149
+
+   24 NUMBER: . ENTIER
+   25       | . REEL
+   26       | . ENTIER_SGN
+   27       | . REEL_SGN
+   52 condition: exp G . exp
+   59 exp: . exp SUB term
+   60    | . exp ADD term
+   61    | . term
+   62 term: . term MUL factor
+   63     | . term DIV factor
+   64     | . factor
+   65 factor: . IDF
+   66       | . IDF '[' ENTIER ']'
+   67       | . IDF '[' IDF ']'
+   68       | . IDF '.' IDF
+   69       | . NUMBER
+   70       | . '(' exp ')'
+
+    IDF         shift, and go to state 108
+    REEL        shift, and go to state 109
+    ENTIER      shift, and go to state 110
+    REEL_SGN    shift, and go to state 111
+    ENTIER_SGN  shift, and go to state 112
+    '('         shift, and go to state 113
+
+    NUMBER  go to state 122
+    exp     go to state 174
+    term    go to state 118
+    factor  go to state 119
+
+
+State 150
+
+   24 NUMBER: . ENTIER
+   25       | . REEL
+   26       | . ENTIER_SGN
+   27       | . REEL_SGN
+   53 condition: exp GE . exp
+   59 exp: . exp SUB term
+   60    | . exp ADD term
+   61    | . term
+   62 term: . term MUL factor
+   63     | . term DIV factor
+   64     | . factor
+   65 factor: . IDF
+   66       | . IDF '[' ENTIER ']'
+   67       | . IDF '[' IDF ']'
+   68       | . IDF '.' IDF
+   69       | . NUMBER
+   70       | . '(' exp ')'
+
+    IDF         shift, and go to state 108
+    REEL        shift, and go to state 109
+    ENTIER      shift, and go to state 110
+    REEL_SGN    shift, and go to state 111
+    ENTIER_SGN  shift, and go to state 112
+    '('         shift, and go to state 113
+
+    NUMBER  go to state 122
+    exp     go to state 175
+    term    go to state 118
+    factor  go to state 119
+
+
+State 151
+
+   24 NUMBER: . ENTIER
+   25       | . REEL
+   26       | . ENTIER_SGN
+   27       | . REEL_SGN
+   54 condition: exp L . exp
+   59 exp: . exp SUB term
+   60    | . exp ADD term
+   61    | . term
+   62 term: . term MUL factor
+   63     | . term DIV factor
+   64     | . factor
+   65 factor: . IDF
+   66       | . IDF '[' ENTIER ']'
+   67       | . IDF '[' IDF ']'
+   68       | . IDF '.' IDF
+   69       | . NUMBER
+   70       | . '(' exp ')'
+
+    IDF         shift, and go to state 108
+    REEL        shift, and go to state 109
+    ENTIER      shift, and go to state 110
+    REEL_SGN    shift, and go to state 111
+    ENTIER_SGN  shift, and go to state 112
+    '('         shift, and go to state 113
+
+    NUMBER  go to state 122
+    exp     go to state 176
+    term    go to state 118
+    factor  go to state 119
+
+
+State 152
+
+   24 NUMBER: . ENTIER
+   25       | . REEL
+   26       | . ENTIER_SGN
+   27       | . REEL_SGN
+   55 condition: exp LE . exp
+   59 exp: . exp SUB term
+   60    | . exp ADD term
+   61    | . term
+   62 term: . term MUL factor
+   63     | . term DIV factor
+   64     | . factor
+   65 factor: . IDF
+   66       | . IDF '[' ENTIER ']'
+   67       | . IDF '[' IDF ']'
+   68       | . IDF '.' IDF
+   69       | . NUMBER
+   70       | . '(' exp ')'
+
+    IDF         shift, and go to state 108
+    REEL        shift, and go to state 109
+    ENTIER      shift, and go to state 110
+    REEL_SGN    shift, and go to state 111
+    ENTIER_SGN  shift, and go to state 112
+    '('         shift, and go to state 113
+
+    NUMBER  go to state 122
+    exp     go to state 177
+    term    go to state 118
+    factor  go to state 119
+
+
+State 153
+
+   24 NUMBER: . ENTIER
+   25       | . REEL
+   26       | . ENTIER_SGN
+   27       | . REEL_SGN
+   56 condition: exp E . exp
+   59 exp: . exp SUB term
+   60    | . exp ADD term
+   61    | . term
+   62 term: . term MUL factor
+   63     | . term DIV factor
+   64     | . factor
+   65 factor: . IDF
+   66       | . IDF '[' ENTIER ']'
+   67       | . IDF '[' IDF ']'
+   68       | . IDF '.' IDF
+   69       | . NUMBER
+   70       | . '(' exp ')'
+
+    IDF         shift, and go to state 108
+    REEL        shift, and go to state 109
+    ENTIER      shift, and go to state 110
+    REEL_SGN    shift, and go to state 111
+    ENTIER_SGN  shift, and go to state 112
+    '('         shift, and go to state 113
+
+    NUMBER  go to state 122
+    exp     go to state 178
+    term    go to state 118
+    factor  go to state 119
+
+
+State 154
+
+   24 NUMBER: . ENTIER
+   25       | . REEL
+   26       | . ENTIER_SGN
+   27       | . REEL_SGN
+   57 condition: exp NE . exp
+   59 exp: . exp SUB term
+   60    | . exp ADD term
+   61    | . term
+   62 term: . term MUL factor
+   63     | . term DIV factor
+   64     | . factor
+   65 factor: . IDF
+   66       | . IDF '[' ENTIER ']'
+   67       | . IDF '[' IDF ']'
+   68       | . IDF '.' IDF
+   69       | . NUMBER
+   70       | . '(' exp ')'
+
+    IDF         shift, and go to state 108
+    REEL        shift, and go to state 109
+    ENTIER      shift, and go to state 110
+    REEL_SGN    shift, and go to state 111
+    ENTIER_SGN  shift, and go to state 112
+    '('         shift, and go to state 113
+
+    NUMBER  go to state 122
+    exp     go to state 179
+    term    go to state 118
+    factor  go to state 119
+
+
+State 155
+
+   24 NUMBER: . ENTIER
+   25       | . REEL
+   26       | . ENTIER_SGN
+   27       | . REEL_SGN
+   62 term: term MUL . factor
+   65 factor: . IDF
+   66       | . IDF '[' ENTIER ']'
+   67       | . IDF '[' IDF ']'
+   68       | . IDF '.' IDF
+   69       | . NUMBER
+   70       | . '(' exp ')'
+
+    IDF         shift, and go to state 108
+    REEL        shift, and go to state 109
+    ENTIER      shift, and go to state 110
+    REEL_SGN    shift, and go to state 111
+    ENTIER_SGN  shift, and go to state 112
+    '('         shift, and go to state 113
+
+    NUMBER  go to state 122
+    factor  go to state 180
+
+
+State 156
+
+   24 NUMBER: . ENTIER
+   25       | . REEL
+   26       | . ENTIER_SGN
+   27       | . REEL_SGN
+   63 term: term DIV . factor
+   65 factor: . IDF
+   66       | . IDF '[' ENTIER ']'
+   67       | . IDF '[' IDF ']'
+   68       | . IDF '.' IDF
+   69       | . NUMBER
+   70       | . '(' exp ')'
+
+    IDF         shift, and go to state 108
+    REEL        shift, and go to state 109
+    ENTIER      shift, and go to state 110
+    REEL_SGN    shift, and go to state 111
+    ENTIER_SGN  shift, and go to state 112
+    '('         shift, and go to state 113
+
+    NUMBER  go to state 122
+    factor  go to state 181
+
+
+State 157
+
+   39 INSTaff4: IDF '[' IDF ']' . AFF exp
+
+    AFF  shift, and go to state 182
+
+
+State 158
+
+   38 INSTaff3: IDF '[' ENTIER ']' . AFF exp
+
+    AFF  shift, and go to state 183
+
+
+State 159
+
+   24 NUMBER: . ENTIER
+   25       | . REEL
+   26       | . ENTIER_SGN
+   27       | . REEL_SGN
+   37 INSTaff2: IDF '.' IDF AFF . exp
+   59 exp: . exp SUB term
+   60    | . exp ADD term
+   61    | . term
+   62 term: . term MUL factor
+   63     | . term DIV factor
+   64     | . factor
+   65 factor: . IDF
+   66       | . IDF '[' ENTIER ']'
+   67       | . IDF '[' IDF ']'
+   68       | . IDF '.' IDF
+   69       | . NUMBER
+   70       | . '(' exp ')'
+
+    IDF         shift, and go to state 108
+    REEL        shift, and go to state 109
+    ENTIER      shift, and go to state 110
+    REEL_SGN    shift, and go to state 111
+    ENTIER_SGN  shift, and go to state 112
+    '('         shift, and go to state 113
+
+    NUMBER  go to state 122
+    exp     go to state 184
+    term    go to state 118
+    factor  go to state 119
+
+
+State 160
+
+   28 instruction: . INSTaff ';' instruction
+   29            | . INSTaff2 ';' instruction
+   30            | . INSTaff3 ';' instruction
+   31            | . INSTaff4 ';' instruction
+   32            | . IFpartie3 '}' instruction
+   33            | . FORpartie4 '}' instruction
+   34            | . WHILEpartie2 '}' instruction
+   35            | . %empty
+   36 INSTaff: . IDF AFF exp
+   37 INSTaff2: . IDF '.' IDF AFF exp
+   38 INSTaff3: . IDF '[' ENTIER ']' AFF exp
+   39 INSTaff4: . IDF '[' IDF ']' AFF exp
+   40 IFpartie3: . IFpartie2 '}' ELSE '{' instruction
+   40          | IFpartie2 '}' ELSE '{' . instruction
+   41 IFpartie2: . IFpartie1 ')' '{' instruction
+   42 IFpartie1: . IF '(' condition
+   43 FORpartie4: . FORpartie3 ')' '{' instruction
+   44 FORpartie3: . FORpartie2 ':' ENTIER ':' condition
+   45 FORpartie2: . FORpartie1 ':' ENTIER
+   46 FORpartie1: . FOR '(' IDF
+   47 WHILEpartie2: . WHILEpartie1 ')' '{' instruction
+   48 WHILEpartie1: . WHILE '(' condition
+
+    IF     shift, and go to state 62
+    FOR    shift, and go to state 63
+    WHILE  shift, and go to state 64
+    IDF    shift, and go to state 65
+
+    $default  reduce using rule 35 (instruction)
+
+    instruction   go to state 185
+    INSTaff       go to state 67
+    INSTaff2      go to state 68
+    INSTaff3      go to state 69
+    INSTaff4      go to state 70
+    IFpartie3     go to state 71
+    IFpartie2     go to state 72
+    IFpartie1     go to state 73
+    FORpartie4    go to state 74
+    FORpartie3    go to state 75
+    FORpartie2    go to state 76
+    FORpartie1    go to state 77
+    WHILEpartie2  go to state 78
+    WHILEpartie1  go to state 79
+
+
+State 161
+
+   41 IFpartie2: IFpartie1 ')' '{' instruction .
+
+    $default  reduce using rule 41 (IFpartie2)
+
+
+State 162
+
+   43 FORpartie4: FORpartie3 ')' '{' instruction .
+
+    $default  reduce using rule 43 (FORpartie4)
+
+
+State 163
+
+   24 NUMBER: . ENTIER
+   25       | . REEL
+   26       | . ENTIER_SGN
+   27       | . REEL_SGN
+   44 FORpartie3: FORpartie2 ':' ENTIER ':' . condition
+   49 condition: . condition OR condition
+   50          | . condition AND condition
+   51          | . NOT '(' condition ')'
+   52          | . exp G exp
+   53          | . exp GE exp
+   54          | . exp L exp
+   55          | . exp LE exp
+   56          | . exp E exp
+   57          | . exp NE exp
+   58          | . NUMBER
+   59 exp: . exp SUB term
+   60    | . exp ADD term
+   61    | . term
+   62 term: . term MUL factor
+   63     | . term DIV factor
+   64     | . factor
+   65 factor: . IDF
+   66       | . IDF '[' ENTIER ']'
+   67       | . IDF '[' IDF ']'
+   68       | . IDF '.' IDF
+   69       | . NUMBER
+   70       | . '(' exp ')'
+
+    IDF         shift, and go to state 108
+    REEL        shift, and go to state 109
+    ENTIER      shift, and go to state 110
+    REEL_SGN    shift, and go to state 111
+    ENTIER_SGN  shift, and go to state 112
+    '('         shift, and go to state 113
+    NOT         shift, and go to state 114
+
+    NUMBER     go to state 115
+    condition  go to state 186
+    exp        go to state 117
+    term       go to state 118
+    factor     go to state 119
+
+
+State 164
+
+   47 WHILEpartie2: WHILEpartie1 ')' '{' instruction .
+
+    $default  reduce using rule 47 (WHILEpartie2)
+
+
+State 165
+
+   67 factor: IDF '[' IDF . ']'
+
+    ']'  shift, and go to state 187
+
+
+State 166
+
+   66 factor: IDF '[' ENTIER . ']'
+
+    ']'  shift, and go to state 188
+
+
+State 167
+
+   68 factor: IDF '.' IDF .
+
+    $default  reduce using rule 68 (factor)
+
+
+State 168
+
+   70 factor: '(' exp ')' .
+
+    $default  reduce using rule 70 (factor)
+
+
+State 169
+
+   49 condition: condition . OR condition
+   50          | condition . AND condition
+   51          | NOT '(' condition . ')'
+
+    ')'  shift, and go to state 189
+    OR   shift, and go to state 145
+    AND  shift, and go to state 146
+
+
+State 170
+
+   49 condition: condition . OR condition
+   49          | condition OR condition .
+   50          | condition . AND condition
+
+    AND  shift, and go to state 146
+
+    $default  reduce using rule 49 (condition)
+
+
+State 171
+
+   49 condition: condition . OR condition
+   50          | condition . AND condition
+   50          | condition AND condition .
+
+    $default  reduce using rule 50 (condition)
+
+
+State 172
+
+   60 exp: exp ADD term .
+   62 term: term . MUL factor
+   63     | term . DIV factor
+
+    MUL  shift, and go to state 155
+    DIV  shift, and go to state 156
+
+    $default  reduce using rule 60 (exp)
+
+
+State 173
+
+   59 exp: exp SUB term .
+   62 term: term . MUL factor
+   63     | term . DIV factor
+
+    MUL  shift, and go to state 155
+    DIV  shift, and go to state 156
+
+    $default  reduce using rule 59 (exp)
+
+
+State 174
+
+   52 condition: exp G exp .
+   59 exp: exp . SUB term
+   60    | exp . ADD term
+
+    ADD  shift, and go to state 147
+    SUB  shift, and go to state 148
+
+    $default  reduce using rule 52 (condition)
+
+
+State 175
+
+   53 condition: exp GE exp .
+   59 exp: exp . SUB term
+   60    | exp . ADD term
+
+    ADD  shift, and go to state 147
+    SUB  shift, and go to state 148
+
+    $default  reduce using rule 53 (condition)
+
+
+State 176
+
+   54 condition: exp L exp .
+   59 exp: exp . SUB term
+   60    | exp . ADD term
+
+    ADD  shift, and go to state 147
+    SUB  shift, and go to state 148
+
+    $default  reduce using rule 54 (condition)
+
+
+State 177
+
+   55 condition: exp LE exp .
+   59 exp: exp . SUB term
+   60    | exp . ADD term
+
+    ADD  shift, and go to state 147
+    SUB  shift, and go to state 148
+
+    $default  reduce using rule 55 (condition)
+
+
+State 178
+
+   56 condition: exp E exp .
+   59 exp: exp . SUB term
+   60    | exp . ADD term
+
+    ADD  shift, and go to state 147
+    SUB  shift, and go to state 148
+
+    $default  reduce using rule 56 (condition)
+
+
+State 179
+
+   57 condition: exp NE exp .
+   59 exp: exp . SUB term
+   60    | exp . ADD term
+
+    ADD  shift, and go to state 147
+    SUB  shift, and go to state 148
+
+    $default  reduce using rule 57 (condition)
+
+
+State 180
+
+   62 term: term MUL factor .
+
+    $default  reduce using rule 62 (term)
+
+
+State 181
+
+   63 term: term DIV factor .
+
+    $default  reduce using rule 63 (term)
+
+
+State 182
+
+   24 NUMBER: . ENTIER
+   25       | . REEL
+   26       | . ENTIER_SGN
+   27       | . REEL_SGN
+   39 INSTaff4: IDF '[' IDF ']' AFF . exp
+   59 exp: . exp SUB term
+   60    | . exp ADD term
+   61    | . term
+   62 term: . term MUL factor
+   63     | . term DIV factor
+   64     | . factor
+   65 factor: . IDF
+   66       | . IDF '[' ENTIER ']'
+   67       | . IDF '[' IDF ']'
+   68       | . IDF '.' IDF
+   69       | . NUMBER
+   70       | . '(' exp ')'
+
+    IDF         shift, and go to state 108
+    REEL        shift, and go to state 109
+    ENTIER      shift, and go to state 110
+    REEL_SGN    shift, and go to state 111
+    ENTIER_SGN  shift, and go to state 112
+    '('         shift, and go to state 113
+
+    NUMBER  go to state 122
+    exp     go to state 190
+    term    go to state 118
+    factor  go to state 119
+
+
+State 183
+
+   24 NUMBER: . ENTIER
+   25       | . REEL
+   26       | . ENTIER_SGN
+   27       | . REEL_SGN
+   38 INSTaff3: IDF '[' ENTIER ']' AFF . exp
+   59 exp: . exp SUB term
+   60    | . exp ADD term
+   61    | . term
+   62 term: . term MUL factor
+   63     | . term DIV factor
+   64     | . factor
+   65 factor: . IDF
+   66       | . IDF '[' ENTIER ']'
+   67       | . IDF '[' IDF ']'
+   68       | . IDF '.' IDF
+   69       | . NUMBER
+   70       | . '(' exp ')'
+
+    IDF         shift, and go to state 108
+    REEL        shift, and go to state 109
+    ENTIER      shift, and go to state 110
+    REEL_SGN    shift, and go to state 111
+    ENTIER_SGN  shift, and go to state 112
+    '('         shift, and go to state 113
+
+    NUMBER  go to state 122
+    exp     go to state 191
+    term    go to state 118
+    factor  go to state 119
+
+
+State 184
+
+   37 INSTaff2: IDF '.' IDF AFF exp .
+   59 exp: exp . SUB term
+   60    | exp . ADD term
+
+    ADD  shift, and go to state 147
+    SUB  shift, and go to state 148
+
+    $default  reduce using rule 37 (INSTaff2)
+
+
+State 185
+
+   40 IFpartie3: IFpartie2 '}' ELSE '{' instruction .
+
+    $default  reduce using rule 40 (IFpartie3)
+
+
+State 186
+
+   44 FORpartie3: FORpartie2 ':' ENTIER ':' condition .
+   49 condition: condition . OR condition
+   50          | condition . AND condition
+
+    OR   shift, and go to state 145
+    AND  shift, and go to state 146
+
+    $default  reduce using rule 44 (FORpartie3)
+
+
+State 187
+
+   67 factor: IDF '[' IDF ']' .
+
+    $default  reduce using rule 67 (factor)
+
+
+State 188
+
+   66 factor: IDF '[' ENTIER ']' .
+
+    $default  reduce using rule 66 (factor)
+
+
+State 189
+
+   51 condition: NOT '(' condition ')' .
+
+    $default  reduce using rule 51 (condition)
+
+
+State 190
+
+   39 INSTaff4: IDF '[' IDF ']' AFF exp .
+   59 exp: exp . SUB term
+   60    | exp . ADD term
+
+    ADD  shift, and go to state 147
+    SUB  shift, and go to state 148
+
+    $default  reduce using rule 39 (INSTaff4)
+
+
+State 191
+
+   38 INSTaff3: IDF '[' ENTIER ']' AFF exp .
+   59 exp: exp . SUB term
+   60    | exp . ADD term
+
+    ADD  shift, and go to state 147
+    SUB  shift, and go to state 148
+
+    $default  reduce using rule 38 (INSTaff3)

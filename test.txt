@@ -1,0 +1,55 @@
+Test{
+    VAR{
+    FLOAT a,b;
+    INTEGER c,r,d,k,i,j;
+    
+    CONST x=23;
+
+    
+
+    STRUCT {
+        INTEGER id;
+        FLOAT Nom;
+    }Livre;
+
+
+STRUCT Livre l1;
+
+    }
+    CODE{
+    
+    %% r=d+8;
+    
+    %%
+    %%c=r*d+(-3);
+
+
+  %%  d=c*2;
+  %%  k=23*1;
+
+%%i=0;
+     %%   IF(x>2){
+     %%       d=d+3;
+     %%   }
+     %%   ELSE{
+     %%     WHILE (i>d){
+     %%         c=r+6;
+     %%   }
+     %%     }
+  %%
+  r=93;
+  FOR (i:0:2:i>r) {
+        c=c+2;
+       }
+
+   
+   
+
+  %%  IF(j!=d+c){
+  %%        c=r+(-2);
+  %%  }
+  %%  ELSE{
+%%
+  %%  }
+    }
+}
